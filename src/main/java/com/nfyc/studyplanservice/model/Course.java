@@ -1,5 +1,7 @@
 package com.nfyc.studyplanservice.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +15,8 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -37,4 +41,23 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Topic> topics = new HashSet<>();
+
+    /**
+     * Adds topic to a course and syncs the bidirectional mapping.
+     * @param topic
+     *
+     */
+    public void addTopic(Topic topic) {
+        this.topics.add(topic);
+        topic.setCourse(this);
+    }
+
+    /**
+     * Removes the topic from a course and updates the bidirectional mapping.
+     * @param topic
+     */
+    public void removeTopic(Topic topic) {
+        this.topics.remove(topic);
+        topic.setCourse(null);
+    }
 }
