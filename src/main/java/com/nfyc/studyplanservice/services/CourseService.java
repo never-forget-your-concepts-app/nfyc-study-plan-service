@@ -1,7 +1,7 @@
 package com.nfyc.studyplanservice.services;
 
 
-import com.nfyc.studyplanservice.model.Course;
+import com.nfyc.studyplanservice.model.domain.Course;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

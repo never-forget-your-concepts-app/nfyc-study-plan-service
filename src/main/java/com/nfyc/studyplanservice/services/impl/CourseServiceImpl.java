@@ -1,6 +1,6 @@
 package com.nfyc.studyplanservice.services.impl;
 
-import com.nfyc.studyplanservice.model.Course;
+import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
 import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
