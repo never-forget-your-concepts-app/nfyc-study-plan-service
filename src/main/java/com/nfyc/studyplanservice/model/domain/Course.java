@@ -1,9 +1,6 @@
 package com.nfyc.studyplanservice.model.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -39,6 +36,8 @@ public class Course {
     @Column(name = "last_revised")
     private Timestamp lastRevised;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Topic> topics = new HashSet<>();
 
@@ -48,8 +47,8 @@ public class Course {
      *
      */
     public void addTopic(Topic topic) {
-        this.topics.add(topic);
         topic.setCourse(this);
+        this.topics.add(topic);
     }
 
     /**
