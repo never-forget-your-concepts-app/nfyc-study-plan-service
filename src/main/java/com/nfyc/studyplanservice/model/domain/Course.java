@@ -3,6 +3,7 @@ package com.nfyc.studyplanservice.model.domain;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -21,6 +22,8 @@ public class Course {
     @Id
     @GeneratedValue(generator = "uuid-hibernate-generator")
     @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID courseID;
 
     @Column(name = "course_name")
@@ -47,6 +50,10 @@ public class Course {
      *
      */
     public void addTopic(Topic topic) {
+        //For Builder Pattern
+        if (topics == null) {
+            topics = new HashSet<>();
+        }
         topic.setCourse(this);
         this.topics.add(topic);
     }
