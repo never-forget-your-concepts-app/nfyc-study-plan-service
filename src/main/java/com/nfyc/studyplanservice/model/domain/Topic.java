@@ -1,10 +1,7 @@
 package com.nfyc.studyplanservice.model.domain;
 
 import com.nfyc.studyplanservice.model.domain.Course;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -40,5 +37,7 @@ public class Topic {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Course course;
 }

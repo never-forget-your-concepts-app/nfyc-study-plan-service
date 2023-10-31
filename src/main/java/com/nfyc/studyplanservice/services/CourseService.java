@@ -2,6 +2,7 @@ package com.nfyc.studyplanservice.services;
 
 
 import com.nfyc.studyplanservice.model.domain.Course;
+import com.nfyc.studyplanservice.model.dto.CourseDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -9,11 +10,12 @@ import java.util.UUID;
 
 @Service
 public interface CourseService {
-    Optional<Course> getCourseById(UUID courseID);
 
-    Optional<Course> addNewCourse(Course course);
+    CourseDTO getCourseById(UUID courseID);
 
-    Optional<Course> updateCourse(Course course);
+    CourseDTO addNewCourse(CourseDTO courseDTO);
 
-    Optional<Course> deleteCourse(Course course);
+    CourseDTO updateCourse(UUID uuid, CourseDTO courseDT);
+
+    void deleteCourse(UUID uuid);
 }
