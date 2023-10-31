@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -13,7 +15,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseDTO {
+    @Null(message = "CourseID should not be set by the user")
     private UUID courseID;
+    @Length(min = 1, max = 100, message = "Course Name can only be between 1 and 100")
     private String courseName;
     private Boolean isRevised;
     private Timestamp lastRevised;
