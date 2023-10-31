@@ -1,5 +1,6 @@
-package com.nfyc.studyplanservice.model;
+package com.nfyc.studyplanservice.model.domain;
 
+import com.nfyc.studyplanservice.model.domain.Course;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

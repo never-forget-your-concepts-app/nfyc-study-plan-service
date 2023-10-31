@@ -1,4 +1,4 @@
-package com.nfyc.studyplanservice.model;
+package com.nfyc.studyplanservice.model.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

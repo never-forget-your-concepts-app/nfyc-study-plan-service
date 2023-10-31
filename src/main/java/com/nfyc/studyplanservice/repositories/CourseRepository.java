@@ -1,6 +1,6 @@
 package com.nfyc.studyplanservice.repositories;
 
-import com.nfyc.studyplanservice.model.Course;
+import com.nfyc.studyplanservice.model.domain.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
