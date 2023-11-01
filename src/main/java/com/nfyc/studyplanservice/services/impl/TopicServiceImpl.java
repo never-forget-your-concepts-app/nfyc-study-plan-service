@@ -8,15 +8,18 @@ import com.nfyc.studyplanservice.repositories.CourseRepository;
 import com.nfyc.studyplanservice.repositories.TopicRepository;
 import com.nfyc.studyplanservice.services.TopicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
+@Service
 @RequiredArgsConstructor
 public class TopicServiceImpl implements TopicService {
 
-    private CourseRepository courseRepository;
-    private TopicRepository topicRepository;
-    private TopicMapper topicMapper;
+    private final CourseRepository courseRepository;
+    private final TopicRepository topicRepository;
+    private final TopicMapper topicMapper;
 
     @Override
     public TopicDTO getTopicByID(UUID topicID) {

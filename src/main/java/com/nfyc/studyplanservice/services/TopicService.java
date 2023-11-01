@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service
 public interface TopicService {
     TopicDTO getTopicByID(UUID topicID);
     TopicDTO addNewTopicToCourse(TopicDTO topicDTO);
