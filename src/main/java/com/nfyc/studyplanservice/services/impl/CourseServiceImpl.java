@@ -6,15 +6,24 @@ import com.nfyc.studyplanservice.model.dto.CourseDTO;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
 import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Service
 @RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
-    private CourseRepository courseRepository;
-    private CourseMapper courseMapper;
+    private final CourseRepository courseRepository;
+    private final CourseMapper courseMapper;
+
+    @Override
+    public List<CourseDTO> getAllCourses() {
+        return courseRepository.findAll().stream().map(courseMapper::courseToCourseDTO).collect(Collectors.toList());
+    }
 
     @Override
     public CourseDTO getCourseById(UUID courseID) {

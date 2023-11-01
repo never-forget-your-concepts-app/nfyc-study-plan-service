@@ -16,7 +16,7 @@ import java.util.HashSet;
 
 @Component
 @RequiredArgsConstructor
-@ComponentScan("com.nfyc.studyplanservice.repositories")
+@ComponentScan("com.nfyc.studyplanservice")
 public class DataLoader implements CommandLineRunner {
 
     @Autowired
@@ -41,6 +41,32 @@ public class DataLoader implements CommandLineRunner {
             mathsCourse.addTopic(geometryTopic);
 
             courseRepository.save(mathsCourse);
+
+            Course historyCourse = Course.builder().courseName("History").isRevised(true)
+                    .lastRevised(new Timestamp(System.currentTimeMillis())).build();
+
+            Topic ancientHistoryTopic = Topic.builder().topicName("Ancient History")
+                    .lastRevised(new Timestamp(System.currentTimeMillis())).priority(3).build();
+            Topic modernHistoryTopic = Topic.builder().topicName("Modern History")
+                    .lastRevised(new Timestamp(System.currentTimeMillis())).priority(4).build();
+
+            historyCourse.addTopic(ancientHistoryTopic);
+            historyCourse.addTopic(modernHistoryTopic);
+
+            courseRepository.save(historyCourse);
+
+            Course biologyCourse = Course.builder().courseName("Biology").isRevised(true)
+                    .lastRevised(new Timestamp(System.currentTimeMillis())).build();
+
+            Topic cellBiologyTopic = Topic.builder().topicName("Cell Biology")
+                    .lastRevised(new Timestamp(System.currentTimeMillis())).priority(2).build();
+            Topic ecologyTopic = Topic.builder().topicName("Ecology")
+                    .lastRevised(new Timestamp(System.currentTimeMillis())).priority(5).build();
+
+            biologyCourse.addTopic(cellBiologyTopic);
+            biologyCourse.addTopic(ecologyTopic);
+
+            courseRepository.save(biologyCourse);
         }
     }
 }

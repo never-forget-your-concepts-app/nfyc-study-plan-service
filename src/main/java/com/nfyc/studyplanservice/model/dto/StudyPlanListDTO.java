@@ -1,5 +1,7 @@
 package com.nfyc.studyplanservice.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +13,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseTopicDTO {
-
-    private CourseDTO courseDTO;
-    private List<TopicDTO> topicDTOS;
+public class StudyPlanListDTO{
+    @JsonProperty("studyPlan") private List<StudyPlanDTO> studyPlanDTOList;
 }

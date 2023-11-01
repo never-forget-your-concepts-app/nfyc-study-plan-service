@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "topics")
+@Table(name = "topics", indexes = {@Index(name = "idx_priority", columnList = "priority")})
 public class Topic {
 
     @Id
