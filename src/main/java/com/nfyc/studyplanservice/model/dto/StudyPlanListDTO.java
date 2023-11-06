@@ -7,12 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudyPlanListDTO{
+public class StudyPlanListDTO implements Serializable {
     @JsonProperty("studyPlan") private List<StudyPlanDTO> studyPlanDTOList;
 }

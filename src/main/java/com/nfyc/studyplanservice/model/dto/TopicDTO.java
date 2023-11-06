@@ -7,6 +7,7 @@ import org.mapstruct.factory.Mappers;
 
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TopicDTO {
+public class TopicDTO implements Serializable {
     @Null(message = "Topic ID should not be set by client")
     private UUID topicID;
     @Length(min = 1, max = 100, message = "Topic Name can only be between 1 and 100")

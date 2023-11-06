@@ -19,6 +19,8 @@ import com.nfyc.studyplanservice.services.CourseService;
 import com.nfyc.studyplanservice.services.StudyPlanService;
 import com.nfyc.studyplanservice.services.TopicService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StudyPlanServiceImpl implements StudyPlanService {
 
     private final CourseRepository courseRepository;
@@ -40,9 +43,10 @@ public class StudyPlanServiceImpl implements StudyPlanService {
 
     private final Validator validator;
 
+    @Cacheable(cacheNames = "studyPlanListCache", condition = "#requestBody.isEmpty()")
     @Override
     public StudyPlanListDTO getStudyPlan(JsonNode requestBody) {
-
+        log.info("Fetching Study Plan");
         FilterRequestListDTO filterRequestListDTO = validateAndGetStudyPlanFilter(requestBody);
         return StudyPlanListDTO.builder().studyPlanDTOList(courseRepository.findAll(CourseSpecifications.applyCourseFilters(filterRequestListDTO))
                 .stream().map(course ->
