@@ -1,5 +1,8 @@
-package com.nfyc.studyplanservice.model.domain;
+package com.nfyc.studyplanservice.repositories.specifications;
 
+import com.nfyc.studyplanservice.model.domain.Course;
+import com.nfyc.studyplanservice.model.domain.FILTER_OPERATORS;
+import com.nfyc.studyplanservice.model.domain.Topic;
 import com.nfyc.studyplanservice.model.dto.FilterRequestDTO;
 import com.nfyc.studyplanservice.model.dto.FilterRequestListDTO;
 import org.springframework.data.jpa.domain.Specification;
