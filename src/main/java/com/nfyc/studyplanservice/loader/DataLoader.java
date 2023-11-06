@@ -62,9 +62,12 @@ public class DataLoader implements CommandLineRunner {
                     .lastRevised(new Timestamp(System.currentTimeMillis())).priority(2).build();
             Topic ecologyTopic = Topic.builder().topicName("Ecology")
                     .lastRevised(new Timestamp(System.currentTimeMillis())).priority(5).build();
+            Topic zoologyTopic = Topic.builder().topicName("Zoology")
+                    .lastRevised(new Timestamp(System.currentTimeMillis())).priority(4).build();
 
             biologyCourse.addTopic(cellBiologyTopic);
             biologyCourse.addTopic(ecologyTopic);
+            biologyCourse.addTopic(zoologyTopic);
 
             courseRepository.save(biologyCourse);
         }

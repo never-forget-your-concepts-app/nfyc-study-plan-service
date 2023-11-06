@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.nfyc.studyplanservice.mappers.CourseMapper;
 import com.nfyc.studyplanservice.mappers.TopicMapper;
+import com.nfyc.studyplanservice.model.domain.Course;
+import com.nfyc.studyplanservice.model.domain.CourseSpecifications;
+import com.nfyc.studyplanservice.model.domain.FILTER_OPERATORS;
+import com.nfyc.studyplanservice.model.dto.FilterRequestDTO;
 import com.nfyc.studyplanservice.model.dto.FilterRequestListDTO;
 import com.nfyc.studyplanservice.model.dto.StudyPlanDTO;
 import com.nfyc.studyplanservice.model.dto.StudyPlanListDTO;
@@ -15,14 +19,13 @@ import com.nfyc.studyplanservice.services.CourseService;
 import com.nfyc.studyplanservice.services.StudyPlanService;
 import com.nfyc.studyplanservice.services.TopicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,15 +44,17 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     public StudyPlanListDTO getStudyPlan(JsonNode requestBody) {
 
         FilterRequestListDTO filterRequestListDTO = validateAndGetStudyPlanFilter(requestBody);
-
-        return StudyPlanListDTO.builder().studyPlanDTOList(courseRepository.findAll().stream().map(course ->
+        return StudyPlanListDTO.builder().studyPlanDTOList(courseRepository.findAll(CourseSpecifications.applyCourseFilters(filterRequestListDTO))
+                .stream().map(course ->
                 StudyPlanDTO.builder().courseDTO(courseMapper.courseToCourseDTO(course))
                         .topicDTOS(course.getTopics().stream()
                                 .map(topicMapper::topicToTopicDTO).collect(Collectors.toSet())).build()).collect(Collectors.toList())).build();
     }
-
     @Override
     public FilterRequestListDTO validateAndGetStudyPlanFilter(JsonNode requestBody) {
+        if (requestBody == null || !requestBody.has("data")){
+            return FilterRequestListDTO.builder().filters(Collections.emptyList()).filterCondition("and").build();
+        }
         JsonNode filter = requestBody.get("data").get("filter");
         if (filter == null){
             throw new RuntimeException("Filter was found Null");
