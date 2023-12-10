@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -33,7 +34,7 @@ public class TopicManagementController {
      * @param topicDTO
      * @return
      */
-    @PutMapping(path ="topic/{topiceId}")
+    @PutMapping(path ="topic/{topicId}")
     public ResponseEntity<TopicDTO> updateTopic(@PathVariable UUID topicId , @RequestBody TopicDTO topicDTO){
         return ResponseEntity.ok(topicService.updateTopic(topicId,topicDTO));
     }
@@ -50,12 +51,23 @@ public class TopicManagementController {
     }
 
     /**
-     * Get topic based on course id
+     * Get topic based on topic id
      * @param topicId
      * @return
      */
     @GetMapping(path = "topic/{topicId}")
     public ResponseEntity<TopicDTO> getTopicById(@PathVariable UUID topicId){
         return ResponseEntity.ok(topicService.getTopicByID(topicId));
+    }
+
+
+    /**
+     * Get topic based on course id
+     * @param courseId
+     * @return
+     */
+    @GetMapping(path = "topic/course/{courseId}")
+    public ResponseEntity<List<TopicDTO>> getTopicByCourseId(@PathVariable UUID courseId){
+        return ResponseEntity.ok(topicService.getTopicByCourseID(courseId));
     }
 }
