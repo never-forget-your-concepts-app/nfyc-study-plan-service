@@ -6,10 +6,9 @@ import com.nfyc.studyplanservice.model.dto.CourseDTO;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
 import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -21,8 +20,10 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
 
     @Override
-    public List<CourseDTO> getAllCourses() {
-        return courseRepository.findAll().stream().map(courseMapper::courseToCourseDTO).collect(Collectors.toList());
+    public Page<CourseDTO> getAllCourses(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CourseDTO> courseDTOPage=courseRepository.findAll(pageable).stream().map(courseMapper::courseToCourseDTO).collect(Collectors.collectingAndThen(Collectors.toList(), PageImpl::new));
+        return courseDTOPage;
     }
 
     @Override

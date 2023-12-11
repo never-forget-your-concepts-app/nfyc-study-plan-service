@@ -4,6 +4,10 @@ import com.nfyc.studyplanservice.model.dto.CourseDTO;
 import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,8 +58,10 @@ public class CourseManagementController {
      * @return
      */
     @GetMapping(path="courses")
-    public ResponseEntity<List<CourseDTO>> getAllCourses(){
-        return ResponseEntity.ok(courseService.getAllCourses());
+
+    public ResponseEntity<Page<CourseDTO>> getAllCourses(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size){
+        return ResponseEntity.ok(courseService.getAllCourses(page,size));
     }
 
     /**

@@ -1,18 +1,15 @@
 package com.nfyc.studyplanservice.services;
 
 
-import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
 public interface CourseService {
 
-    List<CourseDTO> getAllCourses();
+    Page<CourseDTO> getAllCourses(int page,int size);
     CourseDTO getCourseById(UUID courseID);
 
     CourseDTO addNewCourse(CourseDTO courseDTO);
