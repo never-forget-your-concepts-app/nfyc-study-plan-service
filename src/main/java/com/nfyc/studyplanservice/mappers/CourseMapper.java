@@ -12,6 +12,5 @@ public interface CourseMapper {
     CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
     CourseDTO courseToCourseDTO (Course course);
     @Mapping(target = "creationDate", ignore = true)
-    @Mapping(target = "topics", ignore = true)
     Course courseDTOToCourse(CourseDTO courseDTO);
 }

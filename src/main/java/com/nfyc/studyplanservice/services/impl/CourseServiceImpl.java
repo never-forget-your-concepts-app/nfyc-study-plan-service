@@ -1,9 +1,11 @@
 package com.nfyc.studyplanservice.services.impl;
 
 import com.nfyc.studyplanservice.mappers.CourseMapper;
+import com.nfyc.studyplanservice.mappers.TopicMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
+import com.nfyc.studyplanservice.repositories.TopicRepository;
 import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -35,7 +37,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDTO addNewCourse(CourseDTO courseDTO) {
+
+        courseDTO.getTopics().stream().forEach(topicDTO -> {
+            topicDTO.setCourseID(courseDTO.getCourseID());
+        });
+
         Course courseToAdd = courseMapper.courseDTOToCourse(courseDTO);
+        courseToAdd.getTopics().forEach(topic -> topic.setCourse(courseToAdd));
         courseRepository.save(courseToAdd);
         return courseDTO;
     }
