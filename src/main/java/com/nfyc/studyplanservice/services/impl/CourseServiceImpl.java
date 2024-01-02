@@ -1,5 +1,7 @@
 package com.nfyc.studyplanservice.services.impl;
 
+import com.nfyc.studyplanservice.exception.ErrorCode;
+import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.mappers.CourseMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
@@ -9,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -21,8 +22,13 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
 
     @Override
-    public List<CourseDTO> getAllCourses() {
-        return courseRepository.findAll().stream().map(courseMapper::courseToCourseDTO).collect(Collectors.toList());
+    public List<CourseDTO> getAllCourses() throws NyfcException {
+        try {
+            return courseRepository.findAll().stream().map(courseMapper::courseToCourseDTO).collect(Collectors.toList());
+        }
+        catch (Exception exception){
+            throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+        }
     }
 
     @Override

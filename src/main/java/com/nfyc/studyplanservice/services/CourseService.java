@@ -1,18 +1,16 @@
 package com.nfyc.studyplanservice.services;
 
 
-import com.nfyc.studyplanservice.model.domain.Course;
+import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
 public interface CourseService {
 
-    List<CourseDTO> getAllCourses();
+    List<CourseDTO> getAllCourses() throws NyfcException;
     CourseDTO getCourseById(UUID courseID);
 
     CourseDTO addNewCourse(CourseDTO courseDTO);
