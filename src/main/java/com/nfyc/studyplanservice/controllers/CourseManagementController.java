@@ -5,13 +5,9 @@ import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,8 +15,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CourseManagementController {
 
-    @Autowired
-    protected CourseService courseService;
+
+    private final CourseService courseService;
 
     /**
      * Create new course
@@ -51,7 +47,7 @@ public class CourseManagementController {
     @DeleteMapping(path = "course/{courseId}")
     public ResponseEntity<Void> deleteCourse(@PathVariable UUID courseId){
         courseService.deleteCourse(courseId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
     /**
      * Get all courses

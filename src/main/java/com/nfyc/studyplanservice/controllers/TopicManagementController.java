@@ -14,9 +14,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/")
 @RequiredArgsConstructor
 public class TopicManagementController {
-
-    @Autowired
-    protected TopicService topicService;
+    private final TopicService topicService;
 
     /**
      * Create new topic
@@ -66,7 +64,7 @@ public class TopicManagementController {
      * @param courseId
      * @return
      */
-    @GetMapping(path = "topic/course/{courseId}")
+    @GetMapping(path = "course/{courseId}/topics")
     public ResponseEntity<List<TopicDTO>> getTopicByCourseId(@PathVariable UUID courseId){
         return ResponseEntity.ok(topicService.getTopicByCourseID(courseId));
     }
