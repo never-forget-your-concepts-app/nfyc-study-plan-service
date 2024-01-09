@@ -1,15 +1,16 @@
 package com.nfyc.studyplanservice.services.impl;
 
 import com.nfyc.studyplanservice.mappers.CourseMapper;
+import com.nfyc.studyplanservice.mappers.TopicMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
+import com.nfyc.studyplanservice.repositories.TopicRepository;
 import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -21,8 +22,10 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
 
     @Override
-    public List<CourseDTO> getAllCourses() {
-        return courseRepository.findAll().stream().map(courseMapper::courseToCourseDTO).collect(Collectors.toList());
+    public Page<CourseDTO> getAllCourses(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CourseDTO> courseDTOPage=courseRepository.findAll(pageable).stream().map(courseMapper::courseToCourseDTO).collect(Collectors.collectingAndThen(Collectors.toList(), PageImpl::new));
+        return courseDTOPage;
     }
 
     @Override
@@ -34,7 +37,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDTO addNewCourse(CourseDTO courseDTO) {
+
+        courseDTO.getTopics().stream().forEach(topicDTO -> {
+            topicDTO.setCourseID(courseDTO.getCourseID());
+        });
+
         Course courseToAdd = courseMapper.courseDTOToCourse(courseDTO);
+        courseToAdd.getTopics().forEach(topic -> topic.setCourse(courseToAdd));
         courseRepository.save(courseToAdd);
         return courseDTO;
     }

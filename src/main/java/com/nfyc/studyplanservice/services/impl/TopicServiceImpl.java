@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,11 @@ public class TopicServiceImpl implements TopicService {
     public TopicDTO getTopicByID(UUID topicID) {
         return topicRepository.findById(topicID).map(topicMapper::topicToTopicDTO).
                 orElseThrow(() -> new RuntimeException("Topic Not Found"));
+    }
+
+    @Override
+    public  List<TopicDTO> getTopicByCourseID(UUID courseID){
+        return topicRepository.findTopicsByCourse_CourseID(courseID).stream().map(topicMapper::topicToTopicDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -53,5 +59,6 @@ public class TopicServiceImpl implements TopicService {
     public void deleteTopic(UUID topicID) {
         Topic retrievedTopic = topicRepository.findById(topicID).orElseThrow(() -> new RuntimeException("Topic not found to delete"));
         retrievedTopic.getCourse().removeTopic(retrievedTopic);
+        topicRepository.save(retrievedTopic);
     }
 }

@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -22,4 +23,5 @@ public class CourseDTO implements Serializable {
     private String courseName;
     private Boolean isRevised;
     private Timestamp lastRevised;
+    private List<TopicDTO> topics;
 }
