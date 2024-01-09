@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -57,6 +58,7 @@ class CourseServiceImplTest {
     @Test
     public void testAddNewCourse() {
         CourseDTO courseDTO = new CourseDTO();
+        courseDTO.setTopics(Collections.emptyList());
         Course course = new Course();
 
         Mockito.when(courseMapper.courseDTOToCourse(courseDTO)).thenReturn(course);
