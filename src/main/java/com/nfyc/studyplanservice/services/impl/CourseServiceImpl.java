@@ -8,6 +8,7 @@ import com.nfyc.studyplanservice.model.dto.CourseDTO;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
 import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,46 +23,72 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
 
     @Override
-    public List<CourseDTO> getAllCourses() throws NyfcException {
+
+    public Page<CourseDTO> getAllCourses(int page, int size) throws NyfcException {
         try {
-            return courseRepository.findAll().stream().map(courseMapper::courseToCourseDTO).collect(Collectors.toList());
-        }
-        catch (Exception exception){
+            Pageable pageable = PageRequest.of(page, size);
+            Page<CourseDTO> courseDTOPage = courseRepository.findAll(pageable).stream()
+                    .map(courseMapper::courseToCourseDTO)
+                    .collect(Collectors.collectingAndThen(Collectors.toList(), PageImpl::new));
+            return courseDTOPage;
+        } catch (Exception exception) {
             throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
         }
     }
 
     @Override
-    public CourseDTO getCourseById(UUID courseID) {
-        return courseRepository.findById(courseID).map(courseMapper :: courseToCourseDTO).orElseThrow(() ->
-                new RuntimeException("Course Not Found"));
-
-    }
-
-    @Override
-    public CourseDTO addNewCourse(CourseDTO courseDTO) {
-        Course courseToAdd = courseMapper.courseDTOToCourse(courseDTO);
-        courseRepository.save(courseToAdd);
-        return courseDTO;
-    }
-
-    @Override
-    public CourseDTO updateCourse(UUID courseID, CourseDTO courseDTO) {
-        if (!courseID.equals(courseDTO.getCourseID())){
-            throw new RuntimeException("Invalid ID Provided");
+    public CourseDTO getCourseById(UUID courseID) throws NyfcException {
+        try {
+            return courseRepository.findById(courseID).map(courseMapper::courseToCourseDTO)
+                    .orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id"));
+        } catch (Exception exception) {
+            throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
         }
-        return courseRepository.findById(courseID).map(
-                course -> {
-                    course.setCourseName(courseDTO.getCourseName());
-                    Course updatedCourse = courseRepository.save(course);
-                    return courseMapper.courseToCourseDTO(updatedCourse);
-                }
-        ).orElseThrow(() -> new RuntimeException("Course ID Not Found"));
+
     }
 
     @Override
-    public void deleteCourse(UUID courseID) {
-        Course retrievedCourse = courseRepository.findById(courseID).orElseThrow(() -> new RuntimeException("Course Not Found"));
-        courseRepository.delete(retrievedCourse);
+    public CourseDTO addNewCourse(CourseDTO courseDTO) throws NyfcException {
+        try {
+            courseDTO.getTopics().stream().forEach(topicDTO -> {
+                topicDTO.setCourseID(courseDTO.getCourseID());
+            });
+
+            Course courseToAdd = courseMapper.courseDTOToCourse(courseDTO);
+            courseToAdd.getTopics().forEach(topic -> topic.setCourse(courseToAdd));
+            courseRepository.save(courseToAdd);
+            return courseDTO;
+        } catch (Exception e) {
+            throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+        }
+    }
+
+    @Override
+    public CourseDTO updateCourse(UUID courseID, CourseDTO courseDTO) throws NyfcException {
+        if (!courseID.equals(courseDTO.getCourseID())) {
+            throw new NyfcException(ErrorCode.NYFC_ERR_REQUEST_INVALID);
+        }
+        try {
+            return courseRepository.findById(courseID).map(
+                    course -> {
+                        course.setCourseName(courseDTO.getCourseName());
+                        Course updatedCourse = courseRepository.save(course);
+                        return courseMapper.courseToCourseDTO(updatedCourse);
+                    }).orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id"));
+        } catch (Exception e) {
+            throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+        }
+    }
+
+    @Override
+    public void deleteCourse(UUID courseID) throws NyfcException {
+        try {
+            Course retrievedCourse = courseRepository.findById(courseID)
+                    .orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id"));
+            courseRepository.delete(retrievedCourse);
+        } catch (Exception e) {
+            throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+        }
+
     }
 }

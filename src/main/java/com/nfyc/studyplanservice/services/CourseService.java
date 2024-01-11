@@ -1,21 +1,21 @@
 package com.nfyc.studyplanservice.services;
 
-
 import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
 
-import java.util.List;
-import java.util.UUID;
+import org.springframework.data.domain.Page;
 
+import java.util.UUID;
 
 public interface CourseService {
 
-    List<CourseDTO> getAllCourses() throws NyfcException;
-    CourseDTO getCourseById(UUID courseID);
+    CourseDTO addNewCourse(CourseDTO courseDT) throws NyfcException;
 
-    CourseDTO addNewCourse(CourseDTO courseDTO);
+    Page<CourseDTO> getAllCourses(int page, int size) throws NyfcException;
 
-    CourseDTO updateCourse(UUID uuid, CourseDTO courseDT);
+    CourseDTO getCourseById(UUID courseID) throws NyfcException;
 
-    void deleteCourse(UUID uuid);
+    CourseDTO updateCourse(UUID uuid, CourseDTO courseDT) throws NyfcException;
+
+    void deleteCourse(UUID uuid) throws NyfcException;
 }

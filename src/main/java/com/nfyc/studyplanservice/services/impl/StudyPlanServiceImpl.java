@@ -14,6 +14,8 @@ import com.nfyc.studyplanservice.services.StudyPlanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -37,8 +39,9 @@ public class StudyPlanServiceImpl implements StudyPlanService {
 
     @Cacheable(cacheNames = "studyPlanListCache", condition = "#requestBody.isEmpty()")
     @Override
-    public StudyPlanListDTO getStudyPlan(JsonNode requestBody) {
+    public StudyPlanListDTO getStudyPlan(JsonNode requestBody, int pageNo, int pageSize) {
         log.info("Fetching Study Plan");
+        Pageable page =PageRequest.of(pageNo,pageSize);
         FilterRequestListDTO filterRequestListDTO = validateAndGetStudyPlanFilter(requestBody);
         return StudyPlanListDTO.builder().studyPlanDTOList(courseRepository.findAll(CourseSpecifications.applyCourseFilters(filterRequestListDTO))
                 .stream().map(course ->
