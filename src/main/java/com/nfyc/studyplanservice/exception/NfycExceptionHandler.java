@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NfycExceptionHandler{
 
     @ExceptionHandler(NyfcException.class)
-    public @ResponseBody
-    NyfcErrorResponse nyfcException(ErrorCode errorCode) {
-        NyfcException nyfcException=new NyfcException(errorCode);
-        return nyfcException.getError();
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody NyfcErrorResponse nyfcException(NyfcException exception) {
+        return exception.getError();
 
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public NyfcErrorResponse handleInternalServerError() {
+    public NyfcErrorResponse handleInternalServerError(Exception exception) {
         ErrorCode errorCode=ErrorCode.NYFC_ERR_EXCEPTION;
         NyfcErrorResponse errorResponse=new NyfcErrorResponse(errorCode.toString(),errorCode.getMessage(),ErrorType.APPLICATION.toString());
         return errorResponse;

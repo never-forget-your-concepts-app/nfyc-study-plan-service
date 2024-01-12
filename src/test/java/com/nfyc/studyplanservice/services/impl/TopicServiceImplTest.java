@@ -1,9 +1,11 @@
 package com.nfyc.studyplanservice.services.impl;
 
+import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.mappers.TopicMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.domain.Topic;
 import com.nfyc.studyplanservice.model.dto.TopicDTO;
+import com.nfyc.studyplanservice.model.services.impl.TopicServiceImpl;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
 import com.nfyc.studyplanservice.repositories.TopicRepository;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class TopicServiceImplTest {
     private TopicMapper topicMapper;
 
     @Test
-    public void testGetTopicById() {
+    public void testGetTopicById() throws NyfcException {
         UUID topicId = UUID.randomUUID();
         Topic topic = new Topic();
         topic.setTopicID(topicId);
@@ -61,7 +62,7 @@ public class TopicServiceImplTest {
     }
 
     @Test
-    public void testAddNewTopicToCourse() {
+    public void testAddNewTopicToCourse() throws NyfcException {
         UUID courseId = UUID.randomUUID();
         Course course = new Course();
         course.setCourseID(courseId);
@@ -98,7 +99,7 @@ public class TopicServiceImplTest {
     }
 
     @Test
-    public void testUpdateTopic() {
+    public void testUpdateTopic() throws NyfcException {
         UUID topicId = UUID.randomUUID();
         TopicDTO topicDTO = new TopicDTO();
         topicDTO.setTopicID(topicId);
@@ -126,7 +127,7 @@ public class TopicServiceImplTest {
     }
 
     @Test
-    public void testDeleteTopic() {
+    public void testDeleteTopic() throws NyfcException {
         UUID topicId = UUID.randomUUID();
         Topic topic = new Topic();
         Course course = new Course();

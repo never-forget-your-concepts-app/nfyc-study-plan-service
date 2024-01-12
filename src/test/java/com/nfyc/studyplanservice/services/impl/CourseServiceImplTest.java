@@ -1,8 +1,10 @@
 package com.nfyc.studyplanservice.services.impl;
 
+import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.mappers.CourseMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
+import com.nfyc.studyplanservice.model.services.impl.CourseServiceImpl;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +32,7 @@ class CourseServiceImplTest {
     private CourseMapper courseMapper;
 
     @Test
-    public void testGetCourseById() {
+    public void testGetCourseById() throws NyfcException {
         UUID courseId = UUID.randomUUID();
         Course course = new Course();
         course.setCourseID(courseId);
@@ -55,7 +57,7 @@ class CourseServiceImplTest {
     }
 
     @Test
-    public void testAddNewCourse() {
+    public void testAddNewCourse() throws NyfcException {
         CourseDTO courseDTO = new CourseDTO();
         Course course = new Course();
 
@@ -68,7 +70,7 @@ class CourseServiceImplTest {
     }
 
     @Test
-    public void testUpdateCourse() {
+    public void testUpdateCourse() throws NyfcException {
         UUID courseId = UUID.randomUUID();
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setCourseID(courseId);
@@ -100,7 +102,7 @@ class CourseServiceImplTest {
     }
 
     @Test
-    public void testDeleteCourse() {
+    public void testDeleteCourse() throws NyfcException {
         UUID courseId = UUID.randomUUID();
         Course course = new Course();
 
