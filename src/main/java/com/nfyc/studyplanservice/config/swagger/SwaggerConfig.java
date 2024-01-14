@@ -30,24 +30,12 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
   @Bean
   public Docket api() {
-    List<Class<?>> ignoredClasses = Arrays.asList(
-      CourseDTO.class,
-      JsonNode.class,
-      Pageable.class,
-      Page.class, // Assuming Page is a generic class, adjust accordingly
-      Sort.class,
-      StudyPlanDTO.class,
-      StudyPlanListDTO.class,
-      Timestamp.class,
-      TopicDTO.class
-
-    );
-
-
     return new Docket(DocumentationType.SWAGGER_2).select()
+      // api with followng path will be considered
       .paths(PathSelectors.ant("/api/**"))
       .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
         .build().apiInfo(apiInfo());
+
   }
 
   @Bean
