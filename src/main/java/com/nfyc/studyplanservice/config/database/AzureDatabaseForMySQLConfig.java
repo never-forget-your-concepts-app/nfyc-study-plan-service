@@ -1,4 +1,4 @@
-package com.nfyc.studyplanservice.config.cache.database;
+package com.nfyc.studyplanservice.config.database;
 
 import lombok.Getter;
 import lombok.Setter;

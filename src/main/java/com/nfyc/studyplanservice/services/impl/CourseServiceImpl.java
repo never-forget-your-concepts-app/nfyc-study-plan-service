@@ -1,4 +1,4 @@
-package com.nfyc.studyplanservice.model.services.impl;
+package com.nfyc.studyplanservice.services.impl;
 
 import com.nfyc.studyplanservice.exception.ErrorCode;
 import com.nfyc.studyplanservice.exception.NyfcException;
@@ -6,7 +6,7 @@ import com.nfyc.studyplanservice.mappers.CourseMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
-import com.nfyc.studyplanservice.model.services.CourseService;
+import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
         .collect(Collectors.collectingAndThen(Collectors.toList(), PageImpl::new));
       return courseDTOPage;
     } catch (Exception exception) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,exception.getMessage());
     }
   }
 
@@ -50,7 +50,7 @@ public class CourseServiceImpl implements CourseService {
     } catch (NyfcException e) {
       throw e;
     } catch (Exception exception) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,exception.getMessage());
     }
 
   }
@@ -67,7 +67,7 @@ public class CourseServiceImpl implements CourseService {
       courseRepository.save(courseToAdd);
       return courseDTO;
     } catch (Exception e) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,e.getMessage());
     }
   }
 
@@ -84,7 +84,7 @@ public class CourseServiceImpl implements CourseService {
           return courseMapper.courseToCourseDTO(updatedCourse);
         }).orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id"));
     } catch (Exception e) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,e.getMessage());
     }
   }
 
@@ -101,7 +101,7 @@ public class CourseServiceImpl implements CourseService {
       ;
 
     } catch (Exception e) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION);
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,e.getMessage());
     }
 
   }

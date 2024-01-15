@@ -1,4 +1,4 @@
-package com.nfyc.studyplanservice.model.services.impl;
+package com.nfyc.studyplanservice.services.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,7 +10,7 @@ import com.nfyc.studyplanservice.model.dto.FilterRequestListDTO;
 import com.nfyc.studyplanservice.model.dto.StudyPlanDTO;
 import com.nfyc.studyplanservice.model.dto.StudyPlanListDTO;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
-import com.nfyc.studyplanservice.model.services.StudyPlanService;
+import com.nfyc.studyplanservice.services.StudyPlanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;

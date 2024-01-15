@@ -1,4 +1,4 @@
-package com.nfyc.studyplanservice.model.services;
+package com.nfyc.studyplanservice.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.nfyc.studyplanservice.model.dto.FilterRequestListDTO;

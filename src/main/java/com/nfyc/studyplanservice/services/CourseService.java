@@ -1,4 +1,4 @@
-package com.nfyc.studyplanservice.model.services;
+package com.nfyc.studyplanservice.services;
 
 import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;

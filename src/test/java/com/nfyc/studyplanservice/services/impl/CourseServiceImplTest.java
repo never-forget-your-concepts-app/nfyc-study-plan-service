@@ -4,7 +4,6 @@ import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.mappers.CourseMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
-import com.nfyc.studyplanservice.model.services.impl.CourseServiceImpl;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,6 +59,7 @@ class CourseServiceImplTest {
     @Test
     public void testAddNewCourse() throws NyfcException {
         CourseDTO courseDTO = new CourseDTO();
+        courseDTO.setTopics(Collections.emptyList());
         Course course = new Course();
 
         Mockito.when(courseMapper.courseDTOToCourse(courseDTO)).thenReturn(course);

@@ -5,7 +5,6 @@ import com.nfyc.studyplanservice.mappers.TopicMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.domain.Topic;
 import com.nfyc.studyplanservice.model.dto.TopicDTO;
-import com.nfyc.studyplanservice.model.services.impl.TopicServiceImpl;
 import com.nfyc.studyplanservice.repositories.CourseRepository;
 import com.nfyc.studyplanservice.repositories.TopicRepository;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,7 @@ package com.nfyc.studyplanservice.controllers;
 
 import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
-import com.nfyc.studyplanservice.model.services.CourseService;
+import com.nfyc.studyplanservice.services.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

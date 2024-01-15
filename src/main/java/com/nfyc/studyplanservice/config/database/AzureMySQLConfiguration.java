@@ -1,4 +1,4 @@
-package com.nfyc.studyplanservice.config.cache.database;
+package com.nfyc.studyplanservice.config.database;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

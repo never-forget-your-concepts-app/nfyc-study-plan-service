@@ -2,7 +2,7 @@ package com.nfyc.studyplanservice.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.nfyc.studyplanservice.model.dto.StudyPlanListDTO;
-import com.nfyc.studyplanservice.model.services.StudyPlanService;
+import com.nfyc.studyplanservice.services.StudyPlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
