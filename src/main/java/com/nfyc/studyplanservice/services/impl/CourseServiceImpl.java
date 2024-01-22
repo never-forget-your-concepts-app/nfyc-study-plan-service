@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.nfyc.studyplanservice.utl.StudyPlanUtil.isValidUUID;
-
 @Service
 @RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
@@ -33,24 +31,20 @@ public class CourseServiceImpl implements CourseService {
         .collect(Collectors.collectingAndThen(Collectors.toList(), PageImpl::new));
       return courseDTOPage;
     } catch (Exception exception) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,exception.getMessage());
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION, exception.getMessage());
     }
   }
 
   @Override
   public CourseDTO getCourseById(UUID courseID) throws NyfcException {
     try {
-      if (isValidUUID(courseID)) {
-        return courseRepository.findById(courseID).map(courseMapper::courseToCourseDTO)
-          .orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id"));
-      } else {
-        throw new NyfcException(ErrorCode.NYFC_ERR_REQUEST_INVALID);
-      }
+      return courseRepository.findById(courseID).map(courseMapper::courseToCourseDTO)
+        .orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id", courseID.toString()));
 
     } catch (NyfcException e) {
       throw e;
     } catch (Exception exception) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,exception.getMessage());
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION, exception.getMessage());
     }
 
   }
@@ -61,19 +55,18 @@ public class CourseServiceImpl implements CourseService {
       courseDTO.getTopics().stream().forEach(topicDTO -> {
         topicDTO.setCourseID(courseDTO.getCourseID());
       });
-
       Course courseToAdd = courseMapper.courseDTOToCourse(courseDTO);
       courseToAdd.getTopics().forEach(topic -> topic.setCourse(courseToAdd));
       courseRepository.save(courseToAdd);
       return courseDTO;
     } catch (Exception e) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,e.getMessage());
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION, e.getMessage());
     }
   }
 
   @Override
   public CourseDTO updateCourse(UUID courseID, CourseDTO courseDTO) throws NyfcException {
-    if (!courseID.equals(courseDTO.getCourseID()) || !isValidUUID(courseDTO.getCourseID())) {
+    if (!courseID.equals(courseDTO.getCourseID())) {
       throw new NyfcException(ErrorCode.NYFC_ERR_REQUEST_INVALID);
     }
     try {
@@ -82,26 +75,20 @@ public class CourseServiceImpl implements CourseService {
           course.setCourseName(courseDTO.getCourseName());
           Course updatedCourse = courseRepository.save(course);
           return courseMapper.courseToCourseDTO(updatedCourse);
-        }).orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id"));
+        }).orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id", courseID.toString()));
     } catch (Exception e) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,e.getMessage());
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION, e.getMessage());
     }
   }
 
   @Override
   public void deleteCourse(UUID courseID) throws NyfcException {
     try {
-      if (isValidUUID(courseID)) {
-        Course retrievedCourse = courseRepository.findById(courseID)
-          .orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id"));
-        courseRepository.delete(retrievedCourse);
-      } else {
-        throw new NyfcException(ErrorCode.NYFC_ERR_REQUEST_INVALID);
-      }
-      ;
-
+      Course retrievedCourse = courseRepository.findById(courseID)
+        .orElseThrow(() -> new NyfcException(ErrorCode.NYFC_ERR_NOT_FOUND, "course", "id", courseID.toString()));
+      courseRepository.delete(retrievedCourse);
     } catch (Exception e) {
-      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION,e.getMessage());
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION, e.getMessage());
     }
 
   }

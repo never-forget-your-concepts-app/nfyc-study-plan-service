@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NfycExceptionHandler{
 
     @ExceptionHandler(NyfcException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody NyfcErrorResponse nyfcException(NyfcException exception) {
-        return exception.getError();
+        return exception.getErrorResponse();
 
     }
 

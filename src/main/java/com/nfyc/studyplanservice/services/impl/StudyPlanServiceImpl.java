@@ -3,6 +3,8 @@ package com.nfyc.studyplanservice.services.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nfyc.studyplanservice.exception.ErrorCode;
+import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.mappers.CourseMapper;
 import com.nfyc.studyplanservice.mappers.TopicMapper;
 import com.nfyc.studyplanservice.repositories.specifications.CourseSpecifications;
@@ -39,7 +41,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
 
   @Cacheable(cacheNames = "studyPlanListCache", condition = "#requestBody.isEmpty()")
   @Override
-  public StudyPlanListDTO getStudyPlan(JsonNode requestBody, int pageNo, int pageSize) {
+  public StudyPlanListDTO getStudyPlan(JsonNode requestBody, int pageNo, int pageSize) throws NyfcException {
     log.info("Fetching Study Plan");
     Pageable page = PageRequest.of(pageNo, pageSize);
     FilterRequestListDTO filterRequestListDTO = validateAndGetStudyPlanFilter(requestBody);
@@ -53,35 +55,41 @@ public class StudyPlanServiceImpl implements StudyPlanService {
   }
 
   @Override
-  public FilterRequestListDTO validateAndGetStudyPlanFilter(JsonNode requestBody) {
+  public FilterRequestListDTO validateAndGetStudyPlanFilter(JsonNode requestBody) throws NyfcException {
     if (requestBody == null || !requestBody.has("data")) {
       return FilterRequestListDTO.builder().filters(Collections.emptyList()).filterCondition("and").build();
     }
     JsonNode filter = requestBody.get("data").get("filter");
     if (filter == null) {
-      throw new RuntimeException("Filter was found Null");
+      throw new NyfcException(ErrorCode.NYFC_ERR_NULL_EXCEPTION, "Filter");
     }
     String filterCondition = requestBody.get("data").get("filter").fieldNames().next();
 
     if (!Objects.equals(filterCondition, "and") && !Objects.equals(filterCondition, "or")) {
-      throw new RuntimeException("Filter Condition is invalid. It can either be and / or");
+      throw new NyfcException(ErrorCode.NYFC_ERR_REQUEST_INVALID);
     }
 
     if (!filter.get(filterCondition).isArray()) {
-      throw new RuntimeException("Given Condition " + filterCondition + " is not an array");
+      throw new NyfcException(ErrorCode.NYFC_ERR_FILTER_INVALID, filterCondition);
     }
-    TypeReference<FilterRequestListDTO> typeReference = new TypeReference<>() {};
-    FilterRequestListDTO filterRequestListDTO = objectMapper.convertValue(requestBody.get("data").get("filter"),
-      typeReference);
-    filterRequestListDTO.setFilterCondition(filterCondition);
-    Set<ConstraintViolation<FilterRequestListDTO>> violations = validator.validate(filterRequestListDTO);
-    if (!violations.isEmpty()) {
-      StringBuilder sb = new StringBuilder();
-      for (ConstraintViolation<FilterRequestListDTO> constraintViolation : violations) {
-        sb.append(constraintViolation.getMessage());
+
+    try {
+      TypeReference<FilterRequestListDTO> typeReference = new TypeReference<>() {};
+      FilterRequestListDTO filterRequestListDTO = objectMapper.convertValue(requestBody.get("data").get("filter"),
+        typeReference);
+      filterRequestListDTO.setFilterCondition(filterCondition);
+      Set<ConstraintViolation<FilterRequestListDTO>> violations = validator.validate(filterRequestListDTO);
+      if (!violations.isEmpty()) {
+        StringBuilder sb = new StringBuilder();
+        for (ConstraintViolation<FilterRequestListDTO> constraintViolation : violations) {
+          sb.append(constraintViolation.getMessage());
+        }
+        throw new ConstraintViolationException("Error occurred: " + sb.toString(), violations);
       }
-      throw new ConstraintViolationException("Error occurred: " + sb.toString(), violations);
+      return filterRequestListDTO;
+    } catch (Exception e) {
+      throw new NyfcException(ErrorCode.NYFC_ERR_DATABASE_EXCEPTION, e.getMessage());
     }
-    return filterRequestListDTO;
   }
+
 }
