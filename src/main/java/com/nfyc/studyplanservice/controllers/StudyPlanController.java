@@ -1,6 +1,7 @@
 package com.nfyc.studyplanservice.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.model.dto.StudyPlanListDTO;
 import com.nfyc.studyplanservice.services.StudyPlanService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class StudyPlanController {
     @RequestParam(defaultValue = "0")
     int pageNo,
     @RequestParam(defaultValue = "10")
-    int pageSize) {
+    int pageSize) throws NyfcException {
 
     return ResponseEntity.ok(studyPlanService.getStudyPlan(requestBody, pageNo, pageSize));
   }

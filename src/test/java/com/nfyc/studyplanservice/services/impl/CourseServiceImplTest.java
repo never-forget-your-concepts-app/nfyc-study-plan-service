@@ -53,7 +53,7 @@ class CourseServiceImplTest {
 
         Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> courseService.getCourseById(courseId));
+        assertThrows(NyfcException.class, () -> courseService.getCourseById(courseId));
     }
 
     @Test
@@ -93,13 +93,13 @@ class CourseServiceImplTest {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setCourseID(UUID.randomUUID()); // Mismatched ID
 
-        assertThrows(RuntimeException.class, () -> courseService.updateCourse(courseId, courseDTO));
+        assertThrows(NyfcException.class, () -> courseService.updateCourse(courseId, courseDTO));
     }
 
     @Test
     public void testUpdateCourseNotFound() {
         UUID courseId = UUID.randomUUID();
-        assertThrows(RuntimeException.class, () -> courseService.updateCourse(courseId, new CourseDTO()));
+        assertThrows(NyfcException.class, () -> courseService.updateCourse(courseId, new CourseDTO()));
     }
 
     @Test
@@ -120,6 +120,6 @@ class CourseServiceImplTest {
 
         Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> courseService.deleteCourse(courseId));
+        assertThrows(NyfcException.class, () -> courseService.deleteCourse(courseId));
     }
 }

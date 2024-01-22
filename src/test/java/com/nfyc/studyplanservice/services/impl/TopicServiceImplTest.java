@@ -57,7 +57,7 @@ public class TopicServiceImplTest {
 
         Mockito.when(topicRepository.findById(topicId)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> topicService.getTopicByID(topicId));
+        assertThrows(NyfcException.class, () -> topicService.getTopicByID(topicId));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class TopicServiceImplTest {
 
         Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> topicService.addNewTopicToCourse(topicDTO));
+        assertThrows(NyfcException.class, () -> topicService.addNewTopicToCourse(topicDTO));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class TopicServiceImplTest {
 
         Mockito.when(topicRepository.findById(topicId)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> topicService.updateTopic(topicId, new TopicDTO()));
+        assertThrows(NyfcException.class, () -> topicService.updateTopic(topicId, new TopicDTO()));
     }
 
     @Test
@@ -142,6 +142,6 @@ public class TopicServiceImplTest {
 
         Mockito.when(topicRepository.findById(topicId)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> topicService.deleteTopic(topicId));
+        assertThrows(NyfcException.class, () -> topicService.deleteTopic(topicId));
     }
 }
