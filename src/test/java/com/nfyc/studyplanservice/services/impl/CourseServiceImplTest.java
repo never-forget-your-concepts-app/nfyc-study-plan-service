@@ -1,5 +1,6 @@
 package com.nfyc.studyplanservice.services.impl;
 
+import com.nfyc.studyplanservice.exception.NyfcException;
 import com.nfyc.studyplanservice.mappers.CourseMapper;
 import com.nfyc.studyplanservice.model.domain.Course;
 import com.nfyc.studyplanservice.model.dto.CourseDTO;
@@ -31,7 +32,7 @@ class CourseServiceImplTest {
     private CourseMapper courseMapper;
 
     @Test
-    public void testGetCourseById() {
+    public void testGetCourseById() throws NyfcException {
         UUID courseId = UUID.randomUUID();
         Course course = new Course();
         course.setCourseID(courseId);
@@ -52,11 +53,11 @@ class CourseServiceImplTest {
 
         Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> courseService.getCourseById(courseId));
+        assertThrows(NyfcException.class, () -> courseService.getCourseById(courseId));
     }
 
     @Test
-    public void testAddNewCourse() {
+    public void testAddNewCourse() throws NyfcException {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setTopics(Collections.emptyList());
         Course course = new Course();
@@ -70,7 +71,7 @@ class CourseServiceImplTest {
     }
 
     @Test
-    public void testUpdateCourse() {
+    public void testUpdateCourse() throws NyfcException {
         UUID courseId = UUID.randomUUID();
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setCourseID(courseId);
@@ -92,17 +93,17 @@ class CourseServiceImplTest {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setCourseID(UUID.randomUUID()); // Mismatched ID
 
-        assertThrows(RuntimeException.class, () -> courseService.updateCourse(courseId, courseDTO));
+        assertThrows(NyfcException.class, () -> courseService.updateCourse(courseId, courseDTO));
     }
 
     @Test
     public void testUpdateCourseNotFound() {
         UUID courseId = UUID.randomUUID();
-        assertThrows(RuntimeException.class, () -> courseService.updateCourse(courseId, new CourseDTO()));
+        assertThrows(NyfcException.class, () -> courseService.updateCourse(courseId, new CourseDTO()));
     }
 
     @Test
-    public void testDeleteCourse() {
+    public void testDeleteCourse() throws NyfcException {
         UUID courseId = UUID.randomUUID();
         Course course = new Course();
 
@@ -119,6 +120,6 @@ class CourseServiceImplTest {
 
         Mockito.when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> courseService.deleteCourse(courseId));
+        assertThrows(NyfcException.class, () -> courseService.deleteCourse(courseId));
     }
 }
