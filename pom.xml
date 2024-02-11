@@ -9,6 +9,8 @@
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
+
+
     <groupId>com.nfyc</groupId>
     <artifactId>nfyc-study-plan-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -19,7 +21,12 @@
         <module>nfyc-studyplan-domain</module>
         <module>nfyc-studyplan-app</module>
     </modules>
+
+    <properties>
+        <java.version>11</java.version>
+    </properties>
     <dependencies>
+
 
         <dependency>
             <groupId>io.springfox</groupId>
