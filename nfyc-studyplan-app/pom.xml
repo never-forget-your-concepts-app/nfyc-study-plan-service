@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.nfyc</groupId>
@@ -11,10 +10,12 @@
 
     <artifactId>nfyc-studyplan-app</artifactId>
 
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-cloud.version>2021.0.3</spring-cloud.version>
         <h2db.version>1.4.200</h2db.version>
     </properties>
 
@@ -40,7 +41,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>7.14.0</version> <!-- Specify the appropriate version -->
+            <version>7.14.0</version>            <!-- Specify the appropriate version -->
         </dependency>
 
         <dependency>
@@ -87,7 +88,24 @@
             <artifactId>ehcache</artifactId>
             <version>3.8.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <profiles>
         <profile>
@@ -154,8 +172,7 @@
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
-                        <compilerArg>
-                            -Amapstruct.defaultComponentModel=spring
+                        <compilerArg> -Amapstruct.defaultComponentModel=spring
                         </compilerArg>
                     </compilerArgs>
                 </configuration>
